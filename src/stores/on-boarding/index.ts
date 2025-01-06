@@ -3,7 +3,7 @@ import { OnboardingState } from '../../models/common/on-boarding'
 
 export const useOnboardingStore = create<OnboardingState>((set) => ({
   currentStep: 1,
-  isAppEmbedEnabled:  ,
+  isAppEmbedEnabled:  true,
   setCurrentStep: (step) => set({ currentStep: step }),
   setAppEmbedEnabled: (enabled) => set({ isAppEmbedEnabled: enabled })
 }))
