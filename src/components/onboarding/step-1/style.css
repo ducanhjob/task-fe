@@ -1,0 +1,8 @@
+.Polaris-Checkbox__Backdrop{
+    border-radius: 20px;
+}
+ 
+.alert-critical .Polaris-Icon{
+    margin: 0px !important;
+    color:  var(--p-color-text-critical);;
+}

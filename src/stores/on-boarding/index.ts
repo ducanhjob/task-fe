@@ -1,10 +1,25 @@
 import { create } from 'zustand'
-import { OnboardingState } from '../../models/common/on-boarding'
+
+interface OnboardingState {
+  totalSteps: number
+  currentStep: number
+  stepsCompleted: boolean[]
+  themeStatus: boolean
+  setStepCompleted: (step: number) => void
+  setCurrentStep: (step: number) => void
+}
 
 export const useOnboardingStore = create<OnboardingState>((set) => ({
+  totalSteps: 3,
   currentStep: 1,
-  isAppEmbedEnabled:  true,
-  setCurrentStep: (step) => set({ currentStep: step }),
-  setAppEmbedEnabled: (enabled) => set({ isAppEmbedEnabled: enabled })
+  stepsCompleted: [false, false],
+  themeStatus: false,
+  setStepCompleted: (step: number) =>
+    set((state) => ({
+      stepsCompleted: state.stepsCompleted.map((completed, index) =>
+        index === step - 1 ? true : completed
+      ),
+    })),
+  setCurrentStep: (step: number) => set({ currentStep: step }),
 }))
 

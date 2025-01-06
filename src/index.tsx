@@ -2,11 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Frame, AppProvider as PolarisProvider } from "@shopify/polaris";
 import translations from "@shopify/polaris/locales/en.json";
+import '@shopify/polaris/build/esm/styles.css';
+import './components/onboarding/step-1/style.css';
 
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import TaskFeLayout from './pages/TaskFeLayout';
+import PageExample from './pages/onboarding';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,7 +16,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <PolarisProvider i18n={translations}>
   <React.StrictMode>
-    <TaskFeLayout />
+    <PageExample />
   </React.StrictMode>
   </PolarisProvider>
 );
