@@ -1,70 +1,71 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { Button, Collapsible, Text, Icon, Checkbox, Toast, Box, Frame } from '@shopify/polaris';
+import { useState } from 'react';
+import { Button, Collapsible, Text, Icon, Checkbox, Box } from '@shopify/polaris';
 import { AlertCircleIcon, ExternalIcon } from '@shopify/polaris-icons';
-import ModalStep1 from './modal/index';  // Import ModalStep1 component
+import ModalStep1 from './modal';
 
-// Step1 component
 interface Step1Props {
   isActive: boolean;
   isDone: boolean;
   onComplete: () => void;
   setActiveStep: (step: number) => void;
+  isOpen: boolean;
+  onOpenChange: () => void;
+  showToast: (content: string) => void;
+  themeStatus: boolean;
+  setThemeStatus: (status: boolean) => void;
 }
 
-export function Step1({ isActive, isDone, onComplete, setActiveStep }: Step1Props) {
-  const [isOpen, setIsOpen] = useState(isActive);
-  const [themeStatus, setThemeStatus] = useState(false);
-  const [checked, setChecked] = useState(false);
-  const [modalActive, setModalActive] = useState(false);  // State for modal
-
-  const handleChange = useCallback(
-    (newChecked: boolean) => setChecked(newChecked),
-    []
-  );
+export function Step1({
+  isActive,
+  isDone,
+  onComplete,
+  setActiveStep,
+  isOpen,
+  onOpenChange,
+  showToast,
+  themeStatus,
+  setThemeStatus
+}: Step1Props) {
+  const [modalActive, setModalActive] = useState(false);
 
   const handleOpenTheme = () => {
-    setActive((active) => !active);  // Show toast on click
+    showToast("Open theme");
   };
 
   const handleViewInstructions = () => {
-    setModalActive(true);  // Open modal when clicking "View instructions"
+    setModalActive(true);
+    showToast("Open View instructions");
   };
 
   const handleCloseModal = () => {
-    setModalActive(false);  // Close modal
+    setModalActive(false);
   };
 
   const handleNextStep = () => {
     setThemeStatus(true);
+    onComplete();
+    setActiveStep(2);
   };
-  const [active, setActive] = useState(false);
 
-  const toggleActive = useCallback(() => setActive((active) => !active), []);
-
-  const toastMarkup = active ? (
-    <Toast content="Message sent" onDismiss={toggleActive} />
-  ) : null;
   const handleEnableLater = () => {
     onComplete();
     setActiveStep(2);
-    setIsOpen(false);
-    handleChange(true);
   };
 
   return (
     <Box>
       <div style={{ display: 'flex' }}>
         <div style={{ alignItems: 'start', display: 'flex', justifyContent: 'center' }}>
-          <Checkbox label="" checked={checked}  />
+          <Checkbox label="" checked={isDone} onChange={() => { }} />
         </div>
         <div style={{ display: 'flex', width: '100%' }}>
           <div style={{ width: '100%' }}>
             <button
               style={{ background: 'none', border: 'none', width: '100%', textAlign: 'start' }}
               className="flex items-center justify-between w-full p-4 hover:bg-surface-hovered"
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={onOpenChange}
             >
               <div className="flex items-center gap-3">
                 <Text variant="headingMd" as="span">
@@ -88,7 +89,7 @@ export function Step1({ isActive, isDone, onComplete, setActiveStep }: Step1Prop
                       <Text variant="bodyMd" as="p">
                         1. Go to your theme editor by clicking this button
                       </Text>
-                      <Button onClick={handleOpenTheme} icon={ExternalIcon}>Open theme</Button> {/* Show toast on click */}
+                      <Button onClick={handleOpenTheme} icon={ExternalIcon}>Open theme</Button>
                     </div>
                     <div className="space-y-2">
                       <Text variant="bodyMd" as="p">
@@ -108,19 +109,16 @@ export function Step1({ isActive, isDone, onComplete, setActiveStep }: Step1Prop
                     </div>
                   </div>
                 </div>
-                <img src="https://d37eo6c2bs4tyq.cloudfront.net/pixel2/static/media/preview-banner-app-embed.04f4ccf6fb67dc6a61043f425af51090.svg" />
-
+                <img src="https://d37eo6c2bs4tyq.cloudfront.net/pixel2/static/media/preview-banner-app-embed.04f4ccf6fb67dc6a61043f425af51090.svg" alt="Preview banner" />
               </div>
             </Collapsible>
           </div>
         </div>
       </div>
-      <div style={{ display: 'none' }}>
-        <Frame>
-          {toastMarkup}
-        </Frame>
-        <ModalStep1 active={modalActive} handleChange={handleCloseModal} />
-      </div>
-    </Box>
+      <div style={{ display: 'none' }} >
+      <ModalStep1 active={modalActive} handleChange={handleCloseModal} />
+    </div>
+    </Box >
   );
 }
+

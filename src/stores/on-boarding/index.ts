@@ -5,21 +5,26 @@ interface OnboardingState {
   currentStep: number
   stepsCompleted: boolean[]
   themeStatus: boolean
-  setStepCompleted: (step: number) => void
+  openStep: number
+  setStepCompleted: (step: number, completed: boolean) => void
   setCurrentStep: (step: number) => void
+  setThemeStatus: (status: boolean) => void
+  setOpenStep: (step: number) => void
 }
 
 export const useOnboardingStore = create<OnboardingState>((set) => ({
   totalSteps: 3,
   currentStep: 1,
-  stepsCompleted: [false, false],
+  stepsCompleted: [false, false, false],
   themeStatus: false,
-  setStepCompleted: (step: number) =>
+  openStep: 1,
+  setStepCompleted: (step: number, completed: boolean) =>
     set((state) => ({
-      stepsCompleted: state.stepsCompleted.map((completed, index) =>
-        index === step - 1 ? true : completed
+      stepsCompleted: state.stepsCompleted.map((status, index) =>
+        index === step - 1 ? completed : status
       ),
     })),
   setCurrentStep: (step: number) => set({ currentStep: step }),
+  setThemeStatus: (status: boolean) => set({ themeStatus: status }),
+  setOpenStep: (step: number) => set({ openStep: step }),
 }))
-
